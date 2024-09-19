@@ -28,7 +28,6 @@ app.get('/api/products', async (req, res) => {
       }
     }
 
-    console.log(apiUrl)
     const response = await axios.get(apiUrl);
     let products = response.data.products;
 
@@ -55,7 +54,4 @@ app.get('/api/products/:id', async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => {
-  console.log(`Server avviato su http://localhost:${PORT}`);
-});
+module.exports = app;
