@@ -7,9 +7,39 @@ app.use(cors());
 
 app.get('/api/products', async (req, res) => {
   try {
-    const { limit = 10, skip = 0 } = req.query;
-    const response = await axios.get(`https://dummyjson.com/products?limit=${limit}&skip=${skip}`);
-    res.json(response.data);
+    const { limit = 10, skip = 0, search = '', category = '', minPrice = 0, maxPrice = 10000, sort = '' } = req.query;
+
+    let apiUrl = `https://dummyjson.com/products/search?limit=${limit}&skip=${skip}`;
+
+    if (search) {
+      apiUrl += `&q=${encodeURIComponent(search)}`;
+    }
+
+    if (category) {
+      apiUrl += `&category=${encodeURIComponent(category)}`;
+    }
+    
+    if(sort) {
+      if(sort.startsWith('-')) {
+        apiUrl += `&sortBy=${sort.substring(1)}&order=desc`;
+      }
+      else {
+        apiUrl += `&sortBy=${sort}&order=asc`;
+      }
+    }
+
+    console.log(apiUrl)
+    const response = await axios.get(apiUrl);
+    let products = response.data.products;
+
+    products = products.filter(
+      (product) => product.price >= minPrice && product.price <= maxPrice
+    );
+
+    res.json({
+      products,
+      total: response.data.total,
+    });
   } catch (error) {
     res.status(500).json({ error: 'Errore nel recupero dei prodotti' });
   }
