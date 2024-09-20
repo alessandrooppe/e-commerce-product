@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Product } from '../models/product';
-import Loading from './Loading';
-import ErrorLoading from './ErrorLoading';
+import Loading from './commons/Loading';
+import ErrorLoading from './commons/ErrorLoading';
 import { useGetProductsQuery } from '../store/apiSlice';
 
 interface RelatedProductsProps {

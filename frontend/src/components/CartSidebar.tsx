@@ -20,16 +20,16 @@ const CartSidebar = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void
         ) : (
           <div>
             {cart.items.map((item) => (
-              <div key={item.product.id} className="flex items-center justify-between mb-4">
+              <div key={item.product.id} className="flex items-center justify-between mb-4 px-2">
                 <img src={item.product.images[0]} alt={item.product.title} className="w-16 h-16 object-cover rounded" />
-                <div className="ml-4 mr-2">
+                <div className="ml-2 mr-2 flex-1">
                   <h3 className="text-lg truncate">{item.product.title}</h3>
                   <p className="text-sm">Prezzo: {item.product.price} €</p>
                   <p className="text-sm">Quantità: {item.quantity}</p>
                 </div>
                 <button
                   onClick={() => handleRemove(item.product.id)}
-                  className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
+                  className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors mr-2"
                 >
                   Rimuovi
                 </button>

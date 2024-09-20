@@ -2,8 +2,8 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useGetProductByIdQuery } from '../store/apiSlice';
-import Loading from './Loading';
-import ErrorLoading from './ErrorLoading';
+import Loading from './commons/Loading';
+import ErrorLoading from './commons/ErrorLoading';
 import { addToCart } from '../store/cartSlice';
 import RelatedProducts from './RelatedProducts';
 
@@ -18,7 +18,6 @@ const ProductDetail = () => {
 
   const handleAddToCart = () => {
     dispatch(addToCart({ product: product, quantity: 1 }));
-    alert(`${product?.title} è stato aggiunto al carrello!`);
   };
 
   return (

@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useGetProductsQuery } from '../store/apiSlice';
 import { Product } from '../models/product';
-import Loading from './Loading';
-import ErrorLoading from './ErrorLoading';
+import Loading from './commons/Loading';
+import ErrorLoading from './commons/ErrorLoading';
 
 interface ProductSearchAndFilterProps {
   setFilteredProducts: (data: Product[]) => void;
