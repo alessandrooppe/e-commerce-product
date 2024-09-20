@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom'; // Assicurati di importare Link
 import { Product } from '../models/product';
 import Pagination from './Pagination';
 import ProductSearchAndFilter from './ProductSearchAndFilter';
+import StarRating from './StarRating';
 
 const ProductList = () => {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
@@ -16,7 +18,6 @@ const ProductList = () => {
 
   return (
     <div className="container mx-auto px-4 mb-16 mt-8">
-     
       <h1 className="text-4xl font-bold mb-8 text-center">Lista Prodotti Disponibili</h1>
 
       <ProductSearchAndFilter setFilteredProducts={setFilteredProducts} />
@@ -26,25 +27,20 @@ const ProductList = () => {
           <div>Nessun prodotto trovato</div>
         ) : (
           currentProducts.map((product: Product) => (
-            <div key={product.id} className="border border-gray-300 rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300">
+            <Link
+              to={`/products/${product.id}`} // Collegamento alla pagina dettaglio prodotto
+              key={product.id}
+              className="block border border-gray-300 rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300"
+            >
               <img
                 src={product.images[0]}
                 alt={product.title}
                 className="w-full h-auto sm:h-48 md:h-64 lg:h-80 object-cover mb-4 rounded-lg"
               />
               <h3 className="text-lg font-semibold text-gray-800">{product.title}</h3>
-              <div className="flex justify-center mt-2 mb-2">
-                {Array.from({ length: 5 }, (_, i) => (
-                  <span
-                    key={i}
-                    className={`text-yellow-400 ${i < product.rating ? 'text-yellow-500' : 'text-gray-300'}`}
-                  >
-                    {i < product.rating ? '★' : '☆'}
-                  </span>
-                ))}
-              </div>
+              <StarRating rating={product.rating} />
               <p className="text-xl font-bold text-blue-600 mt-2">Prezzo: {product.price} €</p>
-            </div>
+            </Link>
           ))
         )}
       </div>

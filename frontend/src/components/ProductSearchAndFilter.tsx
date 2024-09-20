@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useGetProductsQuery } from '../store/apiSlice';
 import { Product } from '../models/product'; // Importa il tipo Product
+import Loading from './Loading';
+import ErrorLoading from './ErrorLoading';
 
 interface ProductSearchAndFilterProps {
   setFilteredProducts: (data: Product[]) => void; // Specifica che il tipo è Product[]
@@ -30,8 +32,8 @@ const ProductSearchAndFilter = ({ setFilteredProducts }: ProductSearchAndFilterP
     }
   }, [data, setFilteredProducts]);
 
-  if (isLoading) return <div>Caricamento...</div>;
-  if (error) return <div>Errore nel caricamento dei prodotti</div>;
+  if (isLoading) return <Loading />;
+  if (error) return <ErrorLoading />;
 
   return (
     <div className="container mx-auto px-4 py-8 text-black shadow-lg rounded-lg">

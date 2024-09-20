@@ -11,7 +11,7 @@ export interface ProductResponse {
 
 export const productsApi = createApi({
   reducerPath: 'productsApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:5001' }), 
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:5001/api' }), 
   endpoints: (builder) => ({
     getProducts: builder.query<ProductResponse, { 
       limit: number; 
@@ -44,7 +44,7 @@ export const productsApi = createApi({
           params.append('sort', sort);
         }
     
-        return `/api/products?${params.toString()}`;
+        return `/products?${params.toString()}`;
       },
     }),
     getProductById: builder.query<Product, number>({
