@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom'; // Assicurati di importare Link
+import { Link } from 'react-router-dom';
 import { Product } from '../models/product';
 import Pagination from './Pagination';
 import ProductSearchAndFilter from './ProductSearchAndFilter';
@@ -28,7 +28,7 @@ const ProductList = () => {
         ) : (
           currentProducts.map((product: Product) => (
             <Link
-              to={`/products/${product.id}`} // Collegamento alla pagina dettaglio prodotto
+              to={`/products/${product.id}`}
               key={product.id}
               className="block border border-gray-300 rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300"
             >

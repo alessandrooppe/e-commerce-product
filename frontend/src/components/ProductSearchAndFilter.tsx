@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useGetProductsQuery } from '../store/apiSlice';
-import { Product } from '../models/product'; // Importa il tipo Product
+import { Product } from '../models/product';
 import Loading from './Loading';
 import ErrorLoading from './ErrorLoading';
 
 interface ProductSearchAndFilterProps {
-  setFilteredProducts: (data: Product[]) => void; // Specifica che il tipo è Product[]
+  setFilteredProducts: (data: Product[]) => void;
 }
 
 const ProductSearchAndFilter = ({ setFilteredProducts }: ProductSearchAndFilterProps) => {

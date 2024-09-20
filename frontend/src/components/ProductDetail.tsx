@@ -1,25 +1,20 @@
-import { useGetProductByIdQuery, useGetProductsQuery } from '../store/apiSlice';
-import { useParams, Link, useNavigate } from 'react-router-dom';
 import React from 'react';
-import { Product } from '../models/product';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useGetProductByIdQuery } from '../store/apiSlice';
 import Loading from './Loading';
 import ErrorLoading from './ErrorLoading';
 import { addToCart } from '../store/cartSlice';
-import { useDispatch } from 'react-redux';
+import RelatedProducts from './RelatedProducts';
 
 const ProductDetail = () => {
   const { id } = useParams();
   const { data: product, error, isLoading } = useGetProductByIdQuery(Number(id));
-  const { data: products } = useGetProductsQuery({ limit: 100, skip: 0 });
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   if (isLoading) return <Loading />;
   if (error || !product) return <ErrorLoading />;
-
-  const relatedProducts = products?.products
-    .filter((p: Product) => p.category === product?.category && p.id !== product?.id)
-    .slice(0, 5);
 
   const handleAddToCart = () => {
     dispatch(addToCart({ product: product, quantity: 1 }));
@@ -59,26 +54,7 @@ const ProductDetail = () => {
         </div>
       </div>
 
-      {relatedProducts && relatedProducts.length > 0 && (
-        <div className="mt-16">
-          <h2 className="text-2xl font-bold mb-6">Prodotti Correlati</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-            {relatedProducts.map((relatedProduct: Product) => (
-              <div key={relatedProduct.id} className="border border-gray-300 rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300">
-                <Link to={`/products/${relatedProduct.id}`} className="block text-center">
-                  <img
-                    src={relatedProduct.images[0]}
-                    alt={relatedProduct.title}
-                    className="w-full h-48 object-cover mb-4 rounded-lg"
-                  />
-                  <h3 className="text-lg font-semibold text-gray-800">{relatedProduct.title}</h3>
-                  <p className="text-blue-600 font-semibold">Prezzo: {relatedProduct.price} €</p>
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      {product && <RelatedProducts category={product.category} currentProductId={product.id} />}
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface StarRatingProps {
-  rating: number; // La valutazione del prodotto, un numero da 0 a 5
+  rating: number;
 }
 
 const StarRating: React.FC<StarRatingProps> = ({ rating }) => {
