@@ -1,12 +1,12 @@
 # E-Commerce Site
 
-This is an e-commerce site where you can view a list of products, filter them, view product details, and add items to the cart.
+This is an e-commerce site where you can view a list of products, filter them, view product details and add items to the cart.
 
 ## Project Structure
 
 The project is divided into two main parts:
 
-- **Backend**: Manages the APIs for product listing, details, and cart management.
+- **Backend**: Manages the APIs for product listing, details and cart management.
 - **Frontend**: User interface built with React to interact with the backend and display products.
 
 ### APIs
