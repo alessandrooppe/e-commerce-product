@@ -52,7 +52,7 @@ app.get('/api/products/:id', async (req, res) => {
 
 app.get('/api/products/search', async (req, res) => {
   try {
-    const { q } = req.query; // Estrai il termine di ricerca dalla query string
+    const { q } = req.query; 
     const response = await axios.get(`https://dummyjson.com/products/search?q=${q}`);
     res.json(response.data);
   } catch (error) {

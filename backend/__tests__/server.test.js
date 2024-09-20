@@ -28,7 +28,6 @@ describe('Test API /api/products', () => {
     expect(res.body.products[0].title).toBe('Product 1');
   });
 
-
   it('should search products by name', async () => {
     const mockResponse = {
       data: {
