@@ -16,7 +16,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
           <button
             key={i}
             onClick={() => onPageChange(i)}
-            className={`px-3 py-1 mx-1  mb-2 rounded ${currentPage === i ? 'bg-blue-600 text-white' : 'bg-gray-300 hover:bg-blue-500 text-black'}`}
+            className={`px-3 py-1 mx-1 mb-2 rounded ${currentPage === i ? 'bg-blue-600 text-white' : 'bg-gray-300 hover:bg-blue-500 text-black'}`}
           >
             {i}
           </button>
@@ -31,7 +31,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
           <button
             key={i}
             onClick={() => onPageChange(i)}
-            className={`px-3 py-1 mx-1 mb-2 rounded ${currentPage === i ? 'bg-blue-600 text-white mb-2' : 'bg-gray-300 hover:bg-blue-500 text-black'}`}
+            className={`px-3 py-1 mx-1 mb-2 rounded ${currentPage === i ? 'bg-blue-600 text-white' : 'bg-gray-300 hover:bg-blue-500 text-black'}`}
           >
             {i}
           </button>
@@ -45,7 +45,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
           <button
             key={totalPages}
             onClick={() => onPageChange(totalPages)}
-            className={`px-3 py-1 mx-1 rounded mb-2 ${currentPage === totalPages ? 'bg-blue-600 text-white' : 'bg-gray-300 hover:bg-blue-500 text-black'}`}
+            className={`px-3 py-1 mx-1 mb-2 rounded ${currentPage === totalPages ? 'bg-blue-600 text-white' : 'bg-gray-300 hover:bg-blue-500 text-black'}`}
           >
             {totalPages}
           </button>

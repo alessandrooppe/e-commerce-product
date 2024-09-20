@@ -39,7 +39,7 @@ const ProductDetail = () => {
           <img
             src={product?.images[0]}
             alt={product?.title}
-            className="w-full h-auto max-w-md object-cover rounded-lg shadow-md"
+            className="w-full h-64 max-w-md object-cover rounded-lg shadow-md"
           />
         </div>
 

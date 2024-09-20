@@ -1,12 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Product } from '../models/product';
-
-export interface ProductResponse {
-  limit: number;
-  products: Product[];
-  skip: number;
-  total: number;
-}
+import { ProductResponse } from '../models/product-response';
 
 
 export const productsApi = createApi({
@@ -50,7 +44,10 @@ export const productsApi = createApi({
     getProductById: builder.query<Product, number>({
       query: (id) => `/products/${id}`,
     }),
+    getCategories: builder.query<string[], void>({
+      query: () => '/categoriesList',
+    }),
   }),
 });
 
-export const { useGetProductsQuery, useGetProductByIdQuery } = productsApi;
+export const { useGetProductsQuery, useGetProductByIdQuery, useGetCategoriesQuery } = productsApi;

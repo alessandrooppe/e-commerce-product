@@ -1,32 +1,63 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Product } from '../models/product';
 import Pagination from './Pagination';
-import ProductSearchAndFilter from './ProductSearchAndFilter';
 import StarRating from './StarRating';
+import { useGetProductsQuery } from '../store/apiSlice';
+import ProductSearchAndFilter from './ProductSearchAndFilter';
 
 const ProductList = () => {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [totalProducts, setTotalProducts] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 8;
+  const [filters, setFilters] = useState({
+    searchTerm: '',
+    category: '',
+    sortOption: '',
+  });
 
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+  const productsPerPage = 20;
+  const skip = (currentPage - 1) * productsPerPage;
 
-  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+  const { data} = useGetProductsQuery({
+    limit: productsPerPage,
+    skip,
+    search: filters.searchTerm,
+    category: filters.category,
+    sort: filters.sortOption,
+  });
+
+  useEffect(() => {
+    if (data) {
+      setFilteredProducts(data.products);
+      setTotalProducts(data.total);
+    }
+  }, [data]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handleFilterChange = (newFilters: typeof filters) => {
+    setFilters(newFilters);
+    setCurrentPage(1);
+  };
+
+  const totalPages = Math.ceil(totalProducts / productsPerPage);
 
   return (
     <div className="container mx-auto px-4 mb-16 mt-8">
       <h1 className="text-4xl font-bold mb-8 text-center">Lista Prodotti Disponibili</h1>
 
-      <ProductSearchAndFilter setFilteredProducts={setFilteredProducts} />
+      <div className="container mx-auto px-4 py-8 text-black shadow-lg rounded-lg">
+        <ProductSearchAndFilter filters={filters} onFilterChange={handleFilterChange} />
+      </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-8">
-        {currentProducts.length === 0 ? (
+        {filteredProducts.length === 0 ? (
           <div>Nessun prodotto trovato</div>
         ) : (
-          currentProducts.map((product: Product) => (
+          filteredProducts.map((product: Product) => (
             <Link
               to={`/products/${product.id}`}
               key={product.id}
@@ -49,7 +80,7 @@ const ProductList = () => {
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
-          onPageChange={setCurrentPage}
+          onPageChange={handlePageChange}
         />
       )}
     </div>

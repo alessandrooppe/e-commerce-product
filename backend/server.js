@@ -31,10 +31,6 @@ app.get('/api/products', async (req, res) => {
     const response = await axios.get(apiUrl);
     let products = response.data.products;
 
-    products = products.filter(
-      (product) => product.price >= minPrice && product.price <= maxPrice
-    );
-
     res.json({
       products,
       total: response.data.total,
@@ -51,6 +47,28 @@ app.get('/api/products/:id', async (req, res) => {
     res.json(response.data);
   } catch (error) {
     res.status(500).json({ error: 'Errore nel recupero del prodotto' });
+  }
+});
+
+app.get('/api/products/search', async (req, res) => {
+  try {
+    const { q } = req.query; // Estrai il termine di ricerca dalla query string
+    const response = await axios.get(`https://dummyjson.com/products/search?q=${q}`);
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: 'Errore durante la ricerca dei prodotti' });
+  }
+});
+
+app.get('/api/categoriesList', async (req, res) => {
+  try {
+   
+    const response = await axios.get('https://dummyjson.com/products/category-list');
+    console.log(response.data);
+    res.json(response.data);
+
+  } catch (error) {
+    res.status(500).json({ error: 'Errore durante il recupero delle categorie dei prodotti' });
   }
 });
 

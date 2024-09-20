@@ -1,89 +1,74 @@
-import { useState, useEffect } from 'react';
-import { useGetProductsQuery } from '../store/apiSlice';
-import { Product } from '../models/product';
-import Loading from './commons/Loading';
-import ErrorLoading from './commons/ErrorLoading';
+import { useState } from 'react';
+import { useGetCategoriesQuery } from '../store/apiSlice'; // Importa la query per ottenere le categorie
 
-interface ProductSearchAndFilterProps {
-  setFilteredProducts: (data: Product[]) => void;
+interface Filters {
+  searchTerm: string;
+  category: string;
+  sortOption: string;
 }
 
-const ProductSearchAndFilter = ({ setFilteredProducts }: ProductSearchAndFilterProps) => {
-  const [limit] = useState(10);
-  const [skip] = useState(0);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [category, setCategory] = useState('');
-  const [priceRange, setPriceRange] = useState({ min: 0, max: 1000 });
-  const [sortOption, setSortOption] = useState('');
+interface ProductSearchAndFilterProps {
+  filters: Filters;
+  onFilterChange: (filters: Filters) => void;
+}
 
-  const { data, error, isLoading } = useGetProductsQuery({
-    limit,
-    skip,
-    search: searchTerm,
-    category,
-    minPrice: priceRange.min,
-    maxPrice: priceRange.max,
-    sort: sortOption,
-  });
+const ProductSearchAndFilter = ({ filters, onFilterChange }: ProductSearchAndFilterProps) => {
+  const [localFilters, setLocalFilters] = useState(filters);
+  const { data: categories, isLoading, error } = useGetCategoriesQuery(); // Ottieni le categorie dall'API
 
-  useEffect(() => {
-    if (data) {
-      setFilteredProducts(data.products);
-    }
-  }, [data, setFilteredProducts]);
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLocalFilters({ ...localFilters, searchTerm: e.target.value });
+  };
 
-  if (isLoading) return <Loading />;
-  if (error) return <ErrorLoading />;
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setLocalFilters({ ...localFilters, category: e.target.value });
+  };
+
+  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setLocalFilters({ ...localFilters, sortOption: e.target.value });
+  };
+
+  const applyFilters = () => {
+    onFilterChange(localFilters);
+  };
 
   return (
-    <div className="container mx-auto px-4 py-8 text-black shadow-lg rounded-lg">
-      <div className="mb-6">
+    <div className="mb-6">
+      <div className="mb-4">
         <input
           type="text"
           placeholder="Cerca per nome o descrizione"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          value={localFilters.searchTerm}
+          onChange={handleSearchChange}
           className="border border-gray-300 p-3 rounded-lg w-full bg-white text-black"
         />
       </div>
 
-      <div className="mb-6">
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className="border border-gray-300 p-3 rounded-lg w-full bg-white text-black"
-        >
-          <option value="">Tutte le categorie</option>
-          {data?.products &&
-            Array.from(new Set(data.products.map((p) => p.category))).map((category) => (
+      <div className="mb-4">
+        {isLoading ? (
+          <p>Caricamento categorie...</p>
+        ) : error ? (
+          <p>Errore nel caricamento delle categorie</p>
+        ) : (
+          <select
+            value={localFilters.category}
+            onChange={handleCategoryChange}
+            className="border border-gray-300 p-3 rounded-lg w-full bg-white text-black"
+          >
+            <option value="">Tutte le categorie</option>
+            {categories?.map((category: string) => (
               <option key={category} value={category}>
                 {category}
               </option>
             ))}
-        </select>
+          </select>
+        )}
       </div>
 
-      <div className="mb-6 flex space-x-4">
-        <input
-          type="number"
-          placeholder="Prezzo Minimo"
-          value={priceRange.min}
-          onChange={(e) => setPriceRange({ ...priceRange, min: Number(e.target.value) })}
-          className="border border-gray-300 p-3 rounded-lg w-full bg-white text-black"
-        />
-        <input
-          type="number"
-          placeholder="Prezzo Massimo"
-          value={priceRange.max}
-          onChange={(e) => setPriceRange({ ...priceRange, max: Number(e.target.value) })}
-          className="border border-gray-300 p-3 rounded-lg w-full bg-white text-black"
-        />
-      </div>
-
-      <div className="mb-6">
+      <div className="mb-4">
         <select
-          value={sortOption}
-          onChange={(e) => setSortOption(e.target.value)}
+          value={localFilters.sortOption}
+          onChange={handleSortChange}
           className="border border-gray-300 p-3 rounded-lg w-full bg-white text-black"
         >
           <option value="">Ordina per</option>
@@ -92,6 +77,13 @@ const ProductSearchAndFilter = ({ setFilteredProducts }: ProductSearchAndFilterP
           <option value="-rating">Valutazione</option>
         </select>
       </div>
+
+      <button
+        onClick={applyFilters}
+        className="bg-blue-600 text-white px-4 py-2 rounded"
+      >
+        Applica Filtri
+      </button>
     </div>
   );
 };
