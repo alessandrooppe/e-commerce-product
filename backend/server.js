@@ -64,7 +64,6 @@ app.get('/api/categoriesList', async (req, res) => {
   try {
    
     const response = await axios.get('https://dummyjson.com/products/category-list');
-    console.log(response.data);
     res.json(response.data);
 
   } catch (error) {

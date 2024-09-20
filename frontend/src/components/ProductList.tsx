@@ -19,7 +19,7 @@ const ProductList = () => {
   const productsPerPage = 20;
   const skip = (currentPage - 1) * productsPerPage;
 
-  const { data} = useGetProductsQuery({
+  const { data } = useGetProductsQuery({
     limit: productsPerPage,
     skip,
     search: filters.searchTerm,
@@ -47,28 +47,26 @@ const ProductList = () => {
 
   return (
     <div className="container mx-auto px-4 mb-16 mt-8">
-      <h1 className="text-4xl font-bold mb-8 text-center">Lista Prodotti Disponibili</h1>
+      <h1 className="text-4xl font-bold mb-8 text-center text-gray-900">Lista Prodotti Disponibili</h1>
 
-      <div className="container mx-auto px-4 py-8 text-black shadow-lg rounded-lg">
-        <ProductSearchAndFilter filters={filters} onFilterChange={handleFilterChange} />
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-8">
+      <ProductSearchAndFilter filters={filters} onFilterChange={handleFilterChange} />
+    
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-8">
         {filteredProducts.length === 0 ? (
-          <div>Nessun prodotto trovato</div>
+          <div className="text-center text-xl text-gray-500">Nessun prodotto trovato</div>
         ) : (
           filteredProducts.map((product: Product) => (
             <Link
               to={`/products/${product.id}`}
               key={product.id}
-              className="block border border-gray-300 rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300"
+              className="block border border-gray-300 rounded-lg p-4 shadow-md hover:shadow-xl hover:scale-105 transform transition-transform duration-300"
             >
               <img
                 src={product.images[0]}
                 alt={product.title}
-                className="w-full h-auto sm:h-48 md:h-64 lg:h-80 object-cover mb-4 rounded-lg"
+                className="w-full h-auto sm:h-48 md:h-64 lg:h-80 object-cover mb-4 rounded-lg transition-transform duration-300 hover:scale-110"
               />
-              <h3 className="text-lg font-semibold text-gray-800">{product.title}</h3>
+              <h3 className="text-lg font-semibold text-gray-900">{product.title}</h3>
               <StarRating rating={product.rating} />
               <p className="text-xl font-bold text-blue-600 mt-2">Prezzo: {product.price} €</p>
             </Link>
@@ -77,11 +75,13 @@ const ProductList = () => {
       </div>
 
       {totalPages > 1 && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
+        <div className="mt-8">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </div>
       )}
     </div>
   );
