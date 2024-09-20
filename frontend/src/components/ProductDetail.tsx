@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useGetProductByIdQuery } from '../store/apiSlice';
@@ -13,11 +13,16 @@ const ProductDetail = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
+
   if (isLoading) return <Loading />;
   if (error || !product) return <ErrorLoading />;
 
   const handleAddToCart = () => {
     dispatch(addToCart({ product: product, quantity: 1 }));
+    setFeedbackMessage(`${product?.title} è stato aggiunto al carrello!`);
+
+    setTimeout(() => setFeedbackMessage(null), 3000);
   };
 
   return (
@@ -50,6 +55,12 @@ const ProductDetail = () => {
           >
             Aggiungi al Carrello
           </button>
+
+          {feedbackMessage && (
+            <div className="mt-4 bg-green-200 text-green-800 px-4 py-2 rounded-lg">
+              {feedbackMessage}
+            </div>
+          )}
         </div>
       </div>
 
