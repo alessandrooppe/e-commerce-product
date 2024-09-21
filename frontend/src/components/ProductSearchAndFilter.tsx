@@ -14,7 +14,7 @@ interface ProductSearchAndFilterProps {
 
 const ProductSearchAndFilter = ({ filters, onFilterChange }: ProductSearchAndFilterProps) => {
   const [localFilters, setLocalFilters] = useState(filters);
-  const { data: categories, isLoading, error } = useGetCategoriesQuery(); // Ottieni le categorie dall'API
+  const { data: categories, isLoading, error } = useGetCategoriesQuery();
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLocalFilters({ ...localFilters, searchTerm: e.target.value });

@@ -15,9 +15,7 @@ const CartSidebar = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void
     <div className={`fixed top-0 right-0 w-90 h-full bg-white shadow-lg transform ${isOpen ? 'translate-x-0' : 'translate-x-full'} transition-transform duration-300`}>
       <div className="p-4">
         <h2 className="text-2xl font-bold mb-4">Carrello</h2>
-        {cart.items.length === 0 ? (
-          <p>Il carrello è vuoto.</p>
-        ) : (
+        {cart.items.length === 0 ? (<p>Il carrello è vuoto.</p>) : (
           <div>
             {cart.items.map((item) => (
               <div key={item.product.id} className="flex items-center justify-between mb-4 px-2">
