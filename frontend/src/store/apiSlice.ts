@@ -11,9 +11,8 @@ export const productsApi = createApi({
       limit: number; 
       skip: number; 
       search?: string; 
-      category?: string; 
       sort?: string }>({
-      query: ({ limit, skip, search, category, sort }) => {
+      query: ({ limit, skip, search, sort }) => {
         const params = new URLSearchParams();
 
         params.append('limit', String(limit));
@@ -22,9 +21,7 @@ export const productsApi = createApi({
         if (search) {
           params.append('search', search);
         }
-        if (category) {
-          params.append('category', category);
-        }
+     
         if (sort) {
           params.append('sort', sort);
         }

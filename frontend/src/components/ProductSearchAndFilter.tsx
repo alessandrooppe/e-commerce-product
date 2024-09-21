@@ -45,7 +45,7 @@ const ProductSearchAndFilter = ({ filters, onFilterChange }: ProductSearchAndFil
         />
       </div>
 
-      <div className="mb-4">
+      {/* <div className="mb-4">
         {isLoading ? (
           <p className="text-gray-500">Caricamento categorie...</p>
         ) : error ? (
@@ -64,7 +64,7 @@ const ProductSearchAndFilter = ({ filters, onFilterChange }: ProductSearchAndFil
             ))}
           </select>
         )}
-      </div>
+      </div> */}
 
       <div className="mb-4">
         <select

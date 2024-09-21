@@ -85,31 +85,6 @@ describe('Test API /api/products/:id', () => {
   });
 });
 
-describe('Test API /api/products/search', () => {
-  it('should return products matching the search query', async () => {
-    const mockResponse = {
-      data: {
-        products: [
-          { id: 1, title: 'Product 1', price: 100 },
-          { id: 2, title: 'Product 2', price: 200 },
-        ],
-        total: 2,
-      },
-    };
-
-    axios.get.mockResolvedValueOnce(mockResponse);
-
-    const res = await request(app)
-      .get('/api/products/search')
-      .query({ q: 'Product 1' });
-
-    expect(res.statusCode).toBe(200);
-    expect(res.body.products.length).toBe(2);
-    expect(res.body.products[0].title).toContain('Product 1');
-  });
-
-});
-
 describe('Test API /api/categoriesList', () => {
   it('should return the list of product categories', async () => {
     const mockResponse = {
@@ -132,5 +107,45 @@ describe('Test API /api/categoriesList', () => {
 
     expect(res.statusCode).toBe(500);
     expect(res.body.error).toBe('Errore durante il recupero delle categorie dei prodotti');
+  });
+});
+
+describe('Test API /api/byCategory', () => {
+  it('should return the list of products for the specified category', async () => {
+    const mockResponse = {
+      data: {
+        products: [
+          { id: 1, title: 'Product 1' },
+          { id: 2, title: 'Product 2' },
+        ],
+        total: 2,
+      },
+    };
+
+    axios.get.mockResolvedValueOnce(mockResponse);
+
+    const res = await request(app).get('/api/byCategory').query({
+      category: 'electronics',
+      limit: 10,
+      skip: 0,
+    });
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.products.length).toBe(2);
+    expect(res.body.products[0].title).toBe('Product 1');
+    expect(res.body.total).toBe(2);
+  });
+
+  it('should handle errors when retrieving products', async () => {
+    axios.get.mockRejectedValueOnce(new Error('API Error'));
+
+    const res = await request(app).get('/api/byCategory').query({
+      category: 'electronics',
+      limit: 10,
+      skip: 0,
+    });
+
+    expect(res.statusCode).toBe(500);
+    expect(res.body.error).toBe('Errore nel recupero dei prodotti');
   });
 });
