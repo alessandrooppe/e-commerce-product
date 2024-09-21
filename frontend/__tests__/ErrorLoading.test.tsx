@@ -10,11 +10,9 @@ describe('ErrorLoading component', () => {
   it('renders the error message', () => {
     render(<ErrorLoading />);
 
-    // Verifica che il messaggio di errore sia visualizzato
     const errorMessage = screen.getByText(/Errore nel caricamento/i);
     expect(errorMessage).toBeInTheDocument();
 
-    // Verifica che il testo abbia la classe CSS corretta
     expect(errorMessage).toHaveClass('text-center text-xl text-red-600');
   });
 });
