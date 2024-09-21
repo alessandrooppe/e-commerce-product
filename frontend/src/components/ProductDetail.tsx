@@ -39,7 +39,7 @@ const ProductDetail = () => {
           <img
             src={product?.images[0]}
             alt={product?.title}
-            className="w-full h-100 max-w-md object-cover rounded-lg shadow-md"
+            className="w-full h- max-w-md object-cover rounded-lg shadow-md"
           />
         </div>
 
@@ -64,7 +64,7 @@ const ProductDetail = () => {
         </div>
       </div>
 
-      {product && <RelatedProducts category={product.category} currentProductId={product.id} />}
+      {product && <RelatedProducts category={product.category} />}
     </div>
   );
 };

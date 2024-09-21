@@ -7,7 +7,7 @@ app.use(cors());
 
 app.get('/api/products', async (req, res) => {
   try {
-    const { limit = 10, skip = 0, search = '', category = '', minPrice = 0, maxPrice = 10000, sort = '' } = req.query;
+    const { limit = 10, skip = 0, search = '', category = '', sort = '' } = req.query;
 
     let apiUrl = `https://dummyjson.com/products/search?limit=${limit}&skip=${skip}`;
 
@@ -18,7 +18,8 @@ app.get('/api/products', async (req, res) => {
     if (category) {
       apiUrl += `&category=${encodeURIComponent(category)}`;
     }
-    
+    console.log(category)
+    console.log(apiUrl)
     if(sort) {
       if(sort.startsWith('-')) {
         apiUrl += `&sortBy=${sort.substring(1)}&order=desc`;
@@ -70,5 +71,22 @@ app.get('/api/categoriesList', async (req, res) => {
     res.status(500).json({ error: 'Errore durante il recupero delle categorie dei prodotti' });
   }
 });
+
+app.get('/api/byCategory', async (req, res) => {
+  try {
+    const { limit = 10, skip = 0, category = '' } = req.query;
+    let apiUrl = `https://dummyjson.com/products/category/${category}?limit=${limit}&skip=${skip}`;
+    const response = await axios.get(apiUrl);
+    let products = response.data.products;
+
+    res.json({
+      products,
+      total: response.data.total,
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Errore nel recupero dei prodotti' });
+  }
+});
+
 
 module.exports = app;

@@ -12,11 +12,8 @@ export const productsApi = createApi({
       skip: number; 
       search?: string; 
       category?: string; 
-      minPrice?: number; 
-      maxPrice?: number; 
-      sort?: string }
-      >({
-      query: ({ limit, skip, search, category, minPrice, maxPrice, sort }) => {
+      sort?: string }>({
+      query: ({ limit, skip, search, category, sort }) => {
         const params = new URLSearchParams();
 
         params.append('limit', String(limit));
@@ -27,12 +24,6 @@ export const productsApi = createApi({
         }
         if (category) {
           params.append('category', category);
-        }
-        if (minPrice !== undefined && minPrice !== null) {
-          params.append('minPrice', String(minPrice));
-        }
-        if (maxPrice !== undefined && maxPrice !== null) {
-          params.append('maxPrice', String(maxPrice));
         }
         if (sort) {
           params.append('sort', sort);
@@ -47,7 +38,27 @@ export const productsApi = createApi({
     getCategories: builder.query<string[], void>({
       query: () => '/categoriesList',
     }),
+    getProductsByCategory: builder.query<ProductResponse, { 
+      limit: number; 
+      skip: number; 
+      category: string; 
+    }
+      >({
+      query: ({ limit, skip, category }) => {
+        const params = new URLSearchParams();
+        params.append('limit', String(limit));
+        params.append('skip', String(skip));
+        params.append('category', category);
+    
+        return `/byCategory?${params.toString()}`;
+      },
+    }),
   }),
 });
 
-export const { useGetProductsQuery, useGetProductByIdQuery, useGetCategoriesQuery } = productsApi;
+export const { 
+  useGetProductsQuery, 
+  useGetProductByIdQuery, 
+  useGetCategoriesQuery, 
+  useGetProductsByCategoryQuery 
+} = productsApi;
