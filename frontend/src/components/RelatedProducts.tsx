@@ -20,7 +20,7 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({ category }) => {
       <h2 className="text-2xl font-bold mb-6">Prodotti Correlati</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
         {data.products.map((product: Product) => (
-          <ProductCard product={product} />
+          <ProductCard  key={product.id} product={product} />
         ))}
       </div>
     </div>

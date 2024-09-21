@@ -54,7 +54,7 @@ const ProductList = () => {
           <div className="text-center text-xl text-gray-500">Nessun prodotto trovato</div>
         ) : (
           filteredProducts.map((product: Product) => (
-            <ProductCard product={product} />
+            <ProductCard product={product} key={product.id} />
           ))
         )}
       </div>
